@@ -38,8 +38,37 @@ The web-scrapping was done with HTML scrapping of supermarkets, with the help of
 The supermarkets scrapped where: Lidl, Continente and Auchan
 
 This is a example of a scrapping function used:
-![image](https://user-images.githubusercontent.com/83870535/129603612-2ba69791-a4a0-4c42-8928-cdae44410f70.png)
 
+```python
+def lidl_funct():
+    url = 'https://www.lidl.pt/c/produtos-lupilu/c471' # the url for the lidl baby products
+    k = requests.get(url).text # the response
+    
+    soup = BeautifulSoup(k,'html.parser') # use the beautifulsoup to parse the html
+    price_list_raw = soup.find_all(attrs ={'class':'pricebox__price'}) # get the raw list of the prices
+    
+    price_list = [] # the clean list of prices
+    
+    for element in price_list_raw:
+        price_list.append(float((element.text).replace('\n','').strip())) # for loop to clean each item in the raw list
+    
+    
+    soup = BeautifulSoup(k,'html.parser') # use beautifulsoup to parse the html
+    name_list_raw = soup.find_all('h3', attrs= { 'class:','product__title'}) # the raw list of items names
+    
+    name_list = [] # the clean list of prices
+
+    for element in name_list_raw: 
+        name_list.append((element.text).replace('\n','').strip()) # the for loop for cleaning each item in the raw list
+        
+    new_dict = {
+        'produtos': name_list,
+        'preços': price_list,
+        'supermercado': 'lidl'
+    } # the dict that is going to get changed into a dataframe
+    
+    return pd.DataFrame(new_dict) # the return with a dataframe
+```
 
 ## Product
 
